@@ -15,8 +15,17 @@ export default function Quiz() {
     supabase.from('questions').select('*').then(({data})=> setQuestions(data || []))
   }, [])
 
-  if(!user) return <a href="/login">Please Login first</a>
-  if(questions.length===0) return <p>Loading questions... add some at /add-question</p>
+  if(!user) return <div style={{padding:20}}><a href="/login">Please Login first</a></div>
+
+  // FIXED: Show buttons even when no questions
+  if(questions.length===0) return (
+    <div style={{padding:20, maxWidth:600, margin:'auto'}}>
+      <h2>No questions yet</h2>
+      <a href="/add-question" style={{background:'blue',color:'white',padding:'10px 15px',textDecoration:'none',display:'inline-block'}}> + Add Question</a>
+      <a href="/bulk-add" style={{background:'green',color:'white',padding:'10px 15px',marginLeft:10,textDecoration:'none',display:'inline-block'}}>Bulk AI Add</a>
+      <p style={{marginTop:20}}>Click above to add your first Obs & Gynae questions from Ten Teachers Ch.10</p>
+    </div>
+  )
 
   const q = questions[index]
 
@@ -39,11 +48,13 @@ export default function Quiz() {
   }
 
   return (
-    <div style={{maxWidth:'600px', margin:'auto'}}>
+    <div style={{maxWidth:'600px', margin:'auto', padding:20}}>
       <h2>Score: {score} / {questions.length}</h2>
       <a href="/add-question" style={{background:'blue',color:'white',padding:'5px 10px',textDecoration:'none'}}>Add Question</a>
       <a href="/bulk-add" style={{background:'green',color:'white',padding:'5px 10px',marginLeft:10,textDecoration:'none'}}>Bulk AI Add</a>
-      <h3>Q{index+1}: {q.question}</h3>
+      <a href="/leaderboard" style={{marginLeft:10}}>Leaderboard</a>
+
+      <h3 style={{marginTop:20}}>Q{index+1}: {q.question}</h3>
       {q.options.map((opt,i)=>(
         <div key={i} style={colorClass(opt)} onClick={()=>handleSelect(opt)}>{opt}</div>
       ))}
@@ -57,4 +68,4 @@ export default function Quiz() {
       {showResult && <div><h2>Final Score: {score}</h2><button onClick={saveScore}>Save My Score</button> <a href="/leaderboard">Leaderboard</a></div>}
     </div>
   )
-    }
+}
