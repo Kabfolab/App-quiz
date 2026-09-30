@@ -1,9 +1,13 @@
 "use client"
 import { useEffect, useState } from "react"
 import { supabase } from "../lib/supabase"
+import { useRouter } from "next/navigation"
 
 const ICONS = { "obs-gynae": "♀️", "pediatrics": "🍼", "medicine": "💊", "surgery": "✂️", "histopathology": "🔬", "microbiology": "🦠", "pharmacology": "💊", "default": "📚" }
 const COLORS = { "obs-gynae": "#ec4899", "pediatrics": "#3b82f6", "medicine": "#f59e0b", "surgery": "#ef4444", "histopathology": "#a855f7", "microbiology": "#10b981", "default": "#667eea" }
+
+// ADD THIS
+const ADMINS = ["idreesfolab@gmail.com", "idreesgoke@gmail.com"]
 
 export default function Home(){
   const [user,setUser]=useState(null)
@@ -13,6 +17,7 @@ export default function Home(){
   const [email,setEmail]=useState("")
   const [pass,setPass]=useState("")
   const [authLoading,setAuthLoading]=useState(false)
+  const router = useRouter() // ADD THIS
 
   useEffect(()=>{
     supabase.auth.getSession().then(({data})=>{
@@ -72,6 +77,15 @@ export default function Home(){
         <b>🩺 MedQuiz Pro</b><div><span style={{fontSize:11,marginRight:8}}>{user.email}</span><button onClick={logout} style={{background:'#ef4444',color:'white',border:'none',padding:'6px 10px',borderRadius:8}}>Logout</button></div>
       </div>
       <div style={{maxWidth:800,margin:'auto',padding:20}}>
+        
+        {/* ADMIN BUTTONS - ONLY YOU SEE THIS */}
+        {ADMINS.includes(user.email) && (
+          <div style={{display:'flex',gap:10,marginBottom:20}}>
+            <button onClick={()=>router.push('/add-question')} style={{background:'#3b82f6',color:'white',border:'none',padding:'10px 16px',borderRadius:10,fontWeight:'bold',cursor:'pointer'}}> + Add Question</button>
+            <button onClick={()=>router.push('/bulk-add')} style={{background:'#10b981',color:'white',border:'none',padding:'10px 16px',borderRadius:10,fontWeight:'bold',cursor:'pointer'}}> Bulk Add</button>
+          </div>
+        )}
+
         <h2>Choose Subject 👇</h2>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:15,marginTop:20}}>
           {subjects.map(s=>(
