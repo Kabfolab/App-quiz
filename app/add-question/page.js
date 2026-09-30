@@ -4,8 +4,8 @@ import { supabase } from "../lib/supabase"
 
 // ADD MORE EMAILS HERE - anyone here can add questions
 const ADMINS = [
-  "your_email@gmail.com",
-  "second_admin@gmail.com"
+  "idreesgoke@gmail.com",
+  "kabfolab@gmail.com"
 ]
 
 export default function AddQuestion(){
