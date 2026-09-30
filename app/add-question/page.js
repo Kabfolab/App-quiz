@@ -1,6 +1,6 @@
 "use client"
 import { useEffect, useState } from "react"
-import { supabase } from "../lib/supabase"
+import { supabase } from "../../lib/supabase"
 
 // ADD MORE EMAILS HERE - anyone here can add questions
 const ADMINS = [
