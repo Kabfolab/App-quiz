@@ -41,6 +41,8 @@ export default function Quiz() {
   return (
     <div style={{maxWidth:'600px', margin:'auto'}}>
       <h2>Score: {score} / {questions.length}</h2>
+      <a href="/add-question" style={{background:'blue',color:'white',padding:'5px 10px',textDecoration:'none'}}>Add Question</a>
+      <a href="/bulk-add" style={{background:'green',color:'white',padding:'5px 10px',marginLeft:10,textDecoration:'none'}}>Bulk AI Add</a>
       <h3>Q{index+1}: {q.question}</h3>
       {q.options.map((opt,i)=>(
         <div key={i} style={colorClass(opt)} onClick={()=>handleSelect(opt)}>{opt}</div>
