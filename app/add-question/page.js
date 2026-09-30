@@ -11,12 +11,13 @@ export default function AddQuestion(){
   const [correct, setCorrect] = useState("")
 
   async function handleAdd(){
-    console.log("clicked")
-    if(!q || !correct){ alert("Fill question and correct answer"); return; }
-    const { data, error } = await supabase.from("questions").insert([
-      { question: q, option_a: a, option_b: b, option_c: c, option_d: d, correct_answer: correct }
-    ])
-    if(error){ alert("Error: " + error.message); console.log(error) }
+    if(!q){ alert("Add question"); return; }
+    const { error } = await supabase.from("questions").insert([{
+      question: q,
+      options: [a, b, c, d],
+      correct: correct
+    }])
+    if(error) alert("Error: " + error.message)
     else { alert("Added!"); setQ(""); setA(""); setB(""); setC(""); setD(""); setCorrect("") }
   }
 
@@ -29,7 +30,7 @@ export default function AddQuestion(){
       <input placeholder="Option C" value={c} onChange={e=>setC(e.target.value)} style={{width:'100%',padding:10,margin:5}}/>
       <input placeholder="Option D" value={d} onChange={e=>setD(e.target.value)} style={{width:'100%',padding:10,margin:5}}/>
       <input placeholder="Correct answer - copy exactly one option" value={correct} onChange={e=>setCorrect(e.target.value)} style={{width:'100%',padding:10,margin:5}}/>
-      <button onClick={handleAdd} style={{width:'100%',padding:15,margin:10,background:'blue',color:'white',fontSize:18}}>Add</button>
+      <button onClick={handleAdd} style={{width:'100%',padding:15,margin:10,background:'blue',color:'white'}}>Add</button>
     </div>
   )
 }
