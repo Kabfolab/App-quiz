@@ -1,8 +1,35 @@
-'use client'
-import { useState } from 'react'
-import { supabase } from '../../lib/supabase'
-export default function Add(){
-  const [q,setQ]=useState(''); const [o1,setO1]=useState(''); const [o2,setO2]=useState(''); const [o3,setO3]=useState(''); const [o4,setO4]=useState(''); const [correct,setCorrect]=useState('')
-  const add = async ()=>{ await supabase.from('questions').insert({ question: q, options: [o1,o2,o3,o4], correct }); alert('Added!') }
-  return <div style={{maxWidth:'500px'}}><h2>Add Question (Anyone can add)</h2><input placeholder="Question" onChange={e=>setQ(e.target.value)} style={{width:'100%'}}/><input placeholder="Option 1" onChange={e=>setO1(e.target.value)}/><input placeholder="Option 2" onChange={e=>setO2(e.target.value)}/><input placeholder="Option 3" onChange={e=>setO3(e.target.value)}/><input placeholder="Option 4" onChange={e=>setO4(e.target.value)}/><input placeholder="Correct answer (exact text)" onChange={e=>setCorrect(e.target.value)}/><button onClick={add}>Add Question</button></div>
+"use client"
+import { useState } from "react"
+import { supabase } from "../../lib/supabase"
+
+export default function AddQuestion(){
+  const [q, setQ] = useState("")
+  const [a, setA] = useState("")
+  const [b, setB] = useState("")
+  const [c, setC] = useState("")
+  const [d, setD] = useState("")
+  const [correct, setCorrect] = useState("")
+
+  async function handleAdd(){
+    console.log("clicked")
+    if(!q || !correct){ alert("Fill question and correct answer"); return; }
+    const { data, error } = await supabase.from("questions").insert([
+      { question: q, option_a: a, option_b: b, option_c: c, option_d: d, correct_answer: correct }
+    ])
+    if(error){ alert("Error: " + error.message); console.log(error) }
+    else { alert("Added!"); setQ(""); setA(""); setB(""); setC(""); setD(""); setCorrect("") }
+  }
+
+  return (
+    <div style={{padding:20, maxWidth:500, margin:'auto'}}>
+      <h2>Add Question</h2>
+      <input placeholder="Question" value={q} onChange={e=>setQ(e.target.value)} style={{width:'100%',padding:10,margin:5}}/>
+      <input placeholder="Option A" value={a} onChange={e=>setA(e.target.value)} style={{width:'100%',padding:10,margin:5}}/>
+      <input placeholder="Option B" value={b} onChange={e=>setB(e.target.value)} style={{width:'100%',padding:10,margin:5}}/>
+      <input placeholder="Option C" value={c} onChange={e=>setC(e.target.value)} style={{width:'100%',padding:10,margin:5}}/>
+      <input placeholder="Option D" value={d} onChange={e=>setD(e.target.value)} style={{width:'100%',padding:10,margin:5}}/>
+      <input placeholder="Correct answer - copy exactly one option" value={correct} onChange={e=>setCorrect(e.target.value)} style={{width:'100%',padding:10,margin:5}}/>
+      <button onClick={handleAdd} style={{width:'100%',padding:15,margin:10,background:'blue',color:'white',fontSize:18}}>Add</button>
+    </div>
+  )
 }
